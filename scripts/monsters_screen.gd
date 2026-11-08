@@ -12,6 +12,10 @@ var current := "island"
 var island_views: Array = []
 var players: Array[AudioStreamPlayer] = []
 var save_t := 0.0
+var scroll: ScrollContainer = null  # lista attiva (negozio/squadra/scelta), se c'è
+var touching := false
+var drag_on := false
+var press_pos := Vector2.ZERO
 
 # stato battaglia
 var b_id := 0
@@ -137,6 +141,8 @@ func _tab(id: String) -> void:
 	MonsterData.save()
 	current = id
 	island_views = []
+	scroll = null
+	touching = false
 	_clear()
 	for k in tab_buttons:
 		tab_buttons[k].modulate = Color(1, 1, 1, 1) if k == id else Color(0.65, 0.65, 0.7, 1)
@@ -150,9 +156,59 @@ func _tab(id: String) -> void:
 		_build_pick()
 
 
+## Scorrimento col dito gestito a mano: pulsanti e riquadri catturano il tocco e
+## impedirebbero alla lista di scorrere. Qui il tocco sulla lista viene intercettato:
+## se il dito si sposta la lista scorre, se resta fermo è un tocco sul pulsante/mostro sotto.
+func _input(e: InputEvent) -> void:
+	if scroll == null or not is_instance_valid(scroll) or not scroll.is_visible_in_tree():
+		return
+	var rect := scroll.get_global_rect()
+	if e is InputEventScreenTouch or e is InputEventScreenDrag:
+		# lo scorrimento nativo del ScrollContainer sommato al nostro raddoppierebbe la velocità
+		if rect.has_point(e.position) or touching:
+			get_viewport().set_input_as_handled()
+		return
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+		if e.pressed:
+			touching = rect.has_point(e.position)
+			drag_on = false
+			press_pos = e.position
+			if touching:
+				get_viewport().set_input_as_handled()
+		elif touching:
+			touching = false
+			if not drag_on:
+				_tap_at(scroll, e.position)
+			drag_on = false
+			get_viewport().set_input_as_handled()
+	elif e is InputEventMouseMotion and touching:
+		if not drag_on and e.position.distance_to(press_pos) > 14.0:
+			drag_on = true
+		if drag_on:
+			scroll.scroll_vertical -= int(e.relative.y)
+		get_viewport().set_input_as_handled()
+
+
+## Preme il pulsante o il mostro che si trova sotto il punto p (il più in alto). Ritorna true se ne ha trovato uno.
+func _tap_at(node: Node, p: Vector2) -> bool:
+	var kids := node.get_children()
+	kids.reverse()
+	for c in kids:
+		if c is Control and c.visible and c.get_global_rect().has_point(p):
+			if _tap_at(c, p):
+				return true
+	if node is BaseButton and not node.disabled and node.get_global_rect().has_point(p):
+		node.pressed.emit()
+		return true
+	if node is MonsterView and node.clickable and node._hit(p - node.get_global_rect().position):
+		node.tapped.emit()
+		return true
+	return false
+
+
 func _scroll() -> VBoxContainer:
 	var sc := ScrollContainer.new()
-	sc.scroll_deadzone = 16  # permette di scorrere col dito anche partendo da un mostro o da un pulsante
+	scroll = sc
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	content.add_child(sc)
@@ -226,7 +282,8 @@ func _build_shop() -> void:
 	grid.add_theme_constant_override("v_separation", 20)
 	vb.add_child(grid)
 	var order: Array = range(MonsterData.SPECIES.size())
-	order.sort_custom(func(a: int, b: int) -> bool: return int(MonsterData.SPECIES[a]["cost"]) < int(MonsterData.SPECIES[b]["cost"]))
+	# dalla nota più bassa (Do4) alla più alta (Si5)
+	order.sort_custom(func(a: int, b: int) -> bool: return float(MonsterData.SPECIES[a]["freq"]) < float(MonsterData.SPECIES[b]["freq"]))
 	for sp in order:
 		grid.add_child(_shop_card(sp))
 
