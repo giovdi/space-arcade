@@ -11,11 +11,14 @@ var bump := 0.0       # salto extra dopo un tocco/attacco
 var hurt := 0.0       # lampo rosso quando colpito
 var clickable := true
 var t := 0.0
+var press_pos := Vector2.ZERO
+var pending := false
 
 
 func _init(species: int = 0) -> void:
 	sp = species
 	t = randf() * 6.0
+	mouse_filter = Control.MOUSE_FILTER_PASS
 
 
 func _process(delta: float) -> void:
@@ -25,9 +28,27 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 
+## Suona solo con un tocco rapido sul corpo del mostro; fuori dal mostro o
+## trascinando il dito l'evento passa alla lista, che scorre.
+func _hit(p: Vector2) -> bool:
+	var r := minf(size.x, size.y) * 0.3
+	return p.distance_to(Vector2(size.x * 0.5, size.y * 0.58 + r * 0.2)) <= r * 1.15
+
+
 func _gui_input(e: InputEvent) -> void:
-	if clickable and e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
-		tapped.emit()
+	if not clickable:
+		return
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+		if e.pressed:
+			press_pos = e.position
+			pending = _hit(e.position)
+		else:
+			if pending and e.position.distance_to(press_pos) < 20.0:
+				tapped.emit()
+			pending = false
+	elif e is InputEventMouseMotion and pending:
+		if e.position.distance_to(press_pos) >= 20.0:
+			pending = false
 
 
 func _mirror(pts: Array, color: Color) -> void:
