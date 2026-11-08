@@ -42,6 +42,8 @@ jobs:
           cd build/web
           echo "{\"v\":\"$V\"}" > version.json
           cp "$GITHUB_WORKSPACE/web/versioncheck.js" versioncheck.js
+          # il service worker di Godot tiene index.html in cache: lo sostituiamo con uno che pulisce e si disinstalla
+          cp "$GITHUB_WORKSPACE/web/service-worker-reset.js" index.service.worker.js
           # ?v=<hash> su js, json e png referenziati dalla pagina
           sed -i -E "s#(index(\.[a-z-]+)*\.(js|json|png))#\1?v=$V#g" index.html
           # controllo versione caricato per primo + niente cache per la pagina
