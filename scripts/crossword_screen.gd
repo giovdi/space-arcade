@@ -53,6 +53,7 @@ func _ready() -> void:
 	panel.add_child(clue_label)
 
 	var sc := ScrollContainer.new()
+	sc.scroll_deadzone = 16
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	panel.add_child(sc)

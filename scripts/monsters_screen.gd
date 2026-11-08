@@ -152,6 +152,7 @@ func _tab(id: String) -> void:
 
 func _scroll() -> VBoxContainer:
 	var sc := ScrollContainer.new()
+	sc.scroll_deadzone = 16  # permette di scorrere col dito anche partendo da un mostro o da un pulsante
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	content.add_child(sc)
