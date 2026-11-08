@@ -25,6 +25,9 @@ const SPECIES: Array[Dictionary] = [
 	{"name": "Cometa", "color": Color(0.4, 0.4, 0.95), "cost": 5000, "hp": 105, "atk": 27, "inc": 36.0, "freq": 369.99},
 	{"name": "Orbitus", "color": Color(1.0, 0.4, 0.5), "cost": 12000, "hp": 150, "atk": 33, "inc": 68.0, "freq": 415.30},
 	{"name": "Tentacolo", "color": Color(0.7, 0.95, 0.2), "cost": 20000, "hp": 190, "atk": 41, "inc": 100.0, "freq": 466.16},
+	# Ottava alta
+	{"name": "Zefiro", "color": Color(0.6, 0.95, 0.9), "cost": 35000, "hp": 260, "atk": 48, "inc": 150.0, "freq": 880.0},
+	{"name": "Supernova", "color": Color(1.0, 0.7, 0.85), "cost": 50000, "hp": 300, "atk": 55, "inc": 200.0, "freq": 987.77},
 ]
 
 static var coins := 30

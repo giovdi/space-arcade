@@ -138,6 +138,14 @@ func _draw() -> void:
 		_mirror([Vector2(0.15, -0.95), Vector2(0.3, -1.45), Vector2(0.5, -0.85)], Color(0.7, 0.8, 1.0))
 	elif sp == 15:  # Orbitus: anello (parte dietro)
 		draw_polyline(_ring(0.0, TAU), Color(1.0, 0.85, 0.35), 0.12, true)
+	elif sp == 17:  # Zefiro: ali
+		var flap := 0.12 * sin(t * 6.0)
+		_mirror([Vector2(0.8, -0.1), Vector2(1.9, -0.9 + flap), Vector2(1.9, 0.1), Vector2(0.9, 0.55)], Color(1, 1, 1, 0.8))
+	elif sp == 18:  # Supernova: aureola e scintille
+		draw_arc(Vector2(0, -1.4), 0.55, 0.0, TAU, 24, Color(1.0, 0.9, 0.3), 0.1, true)
+		for k in 8:
+			var a := TAU * k / 8.0 + t
+			draw_circle(Vector2(cos(a), sin(a)) * 1.5, 0.1, Color(1.0, 0.95, 0.6))
 	elif sp == 16:  # Tentacolo: tentacoli
 		for k in 4:
 			var x := -0.6 + 0.4 * k
