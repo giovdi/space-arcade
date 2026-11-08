@@ -60,6 +60,14 @@ func _mirror(pts: Array, color: Color) -> void:
 	draw_colored_polygon(m, color)
 
 
+func _ring(a0: float, a1: float) -> PackedVector2Array:
+	var pts := PackedVector2Array()
+	for k in 25:
+		var a := lerpf(a0, a1, k / 24.0)
+		pts.append(Vector2(cos(a) * 1.7, sin(a) * 0.45 + 0.25).rotated(-0.3))
+	return pts
+
+
 func _eye(p: Vector2, r: float) -> void:
 	draw_circle(p, r, Color.WHITE)
 	draw_circle(p + Vector2(look * r * 0.35, 0.03), r * 0.5, Color(0.05, 0.05, 0.15))
@@ -113,6 +121,29 @@ func _draw() -> void:
 		draw_colored_polygon(PackedVector2Array([Vector2(-0.22, -1.22), Vector2(0, -1.5), Vector2(0.22, -1.22)]), Color(1.0, 0.65, 0.1))
 		draw_circle(Vector2(0.1, -1.75), 0.15, Color(0.6, 0.6, 0.65, 0.5))
 		draw_circle(Vector2(-0.05, -2.0), 0.2, Color(0.6, 0.6, 0.65, 0.35))
+	elif sp == 12:  # Bubbo: bolle
+		for b in [[Vector2(-0.35, -1.15), 0.22], [Vector2(0.15, -1.45), 0.17], [Vector2(0.55, -1.2), 0.13]]:
+			draw_circle(b[0], b[1], Color(0.8, 1.0, 1.0, 0.75))
+			draw_arc(b[0], b[1], 0.0, TAU, 16, Color(1, 1, 1), 0.04, true)
+	elif sp == 13:  # Pulsar: raggi tutto intorno
+		for k in 10:
+			var a := TAU * k / 10.0 + t * 0.5
+			var tri := PackedVector2Array([
+				Vector2(cos(a - 0.22), sin(a - 0.22)), Vector2(cos(a + 0.22), sin(a + 0.22)),
+				Vector2(cos(a), sin(a)) * 1.55])
+			draw_colored_polygon(tri, Color(1.0, 0.85, 0.3))
+	elif sp == 14:  # Cometa: coda
+		draw_colored_polygon(PackedVector2Array([Vector2(-0.7, -0.6), Vector2(-2.1, -1.2), Vector2(-1.4, -0.2),
+			Vector2(-2.2, 0.3), Vector2(-0.8, 0.6)]), Color(0.7, 0.8, 1.0, 0.75))
+		_mirror([Vector2(0.15, -0.95), Vector2(0.3, -1.45), Vector2(0.5, -0.85)], Color(0.7, 0.8, 1.0))
+	elif sp == 15:  # Orbitus: anello (parte dietro)
+		draw_polyline(_ring(0.0, TAU), Color(1.0, 0.85, 0.35), 0.12, true)
+	elif sp == 16:  # Tentacolo: tentacoli
+		for k in 4:
+			var x := -0.6 + 0.4 * k
+			var tip := Vector2(x + 0.25 * sin(t * 4.0 + k), 1.55)
+			draw_line(Vector2(x, 0.7), tip, col.darkened(0.15), 0.2, true)
+			draw_circle(tip, 0.13, col.lightened(0.3))
 
 	# Corpo
 	draw_circle(Vector2.ZERO, 1.0, col)
@@ -132,6 +163,8 @@ func _draw() -> void:
 			Vector2(-0.6, -0.85), Vector2(-0.7, -1.4), Vector2(-0.35, -1.1), Vector2(0, -1.5),
 			Vector2(0.35, -1.1), Vector2(0.7, -1.4), Vector2(0.6, -0.85)]), Color(1.0, 0.85, 0.2))
 		draw_circle(Vector2(0, -1.0), 0.1, Color(0.9, 0.2, 0.4))
+	elif sp == 15:  # Orbitus: anello (parte davanti)
+		draw_polyline(_ring(0.0, PI), Color(1.0, 0.85, 0.35), 0.12, true)
 
 	# Occhi e bocca
 	if sp == 3:

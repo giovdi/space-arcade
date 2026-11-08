@@ -19,6 +19,12 @@ const SPECIES: Array[Dictionary] = [
 	{"name": "Robo-Luna", "color": Color(0.6, 0.65, 0.72), "cost": 10000, "hp": 170, "atk": 28, "inc": 58.0, "freq": 587.33},
 	{"name": "Vulcano", "color": Color(0.75, 0.25, 0.15), "cost": 16000, "hp": 160, "atk": 38, "inc": 80.0, "freq": 698.46},
 	{"name": "Re Galassia", "color": Color(0.5, 0.3, 0.85), "cost": 25000, "hp": 230, "atk": 44, "inc": 120.0, "freq": 783.99},
+	# Note diesis (tasti neri): la nota è in "freq", il costo li mette in mezzo agli altri nel negozio.
+	{"name": "Bubbo", "color": Color(0.3, 0.9, 0.8), "cost": 800, "hp": 75, "atk": 14, "inc": 10.0, "freq": 277.18},
+	{"name": "Pulsar", "color": Color(0.95, 0.95, 0.5), "cost": 2000, "hp": 105, "atk": 21, "inc": 18.0, "freq": 311.13},
+	{"name": "Cometa", "color": Color(0.4, 0.4, 0.95), "cost": 5000, "hp": 105, "atk": 27, "inc": 36.0, "freq": 369.99},
+	{"name": "Orbitus", "color": Color(1.0, 0.4, 0.5), "cost": 12000, "hp": 150, "atk": 33, "inc": 68.0, "freq": 415.30},
+	{"name": "Tentacolo", "color": Color(0.7, 0.95, 0.2), "cost": 20000, "hp": 190, "atk": 41, "inc": 100.0, "freq": 466.16},
 ]
 
 static var coins := 30

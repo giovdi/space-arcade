@@ -225,7 +225,9 @@ func _build_shop() -> void:
 	grid.add_theme_constant_override("h_separation", 20)
 	grid.add_theme_constant_override("v_separation", 20)
 	vb.add_child(grid)
-	for sp in MonsterData.SPECIES.size():
+	var order: Array = range(MonsterData.SPECIES.size())
+	order.sort_custom(func(a: int, b: int) -> bool: return int(MonsterData.SPECIES[a]["cost"]) < int(MonsterData.SPECIES[b]["cost"]))
+	for sp in order:
 		grid.add_child(_shop_card(sp))
 
 
