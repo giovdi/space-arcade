@@ -146,6 +146,25 @@ func _draw() -> void:
 		for k in 8:
 			var a := TAU * k / 8.0 + t
 			draw_circle(Vector2(cos(a), sin(a)) * 1.5, 0.1, Color(1.0, 0.95, 0.6))
+	elif sp == 20:  # Meteora: scia di fuoco
+		draw_colored_polygon(PackedVector2Array([Vector2(0.6, -0.8), Vector2(2.1, -1.5), Vector2(1.5, -0.4),
+			Vector2(2.2, 0.2), Vector2(0.8, 0.5)]), Color(1.0, 0.55, 0.1, 0.85))
+		draw_colored_polygon(PackedVector2Array([Vector2(0.7, -0.5), Vector2(1.6, -0.9), Vector2(1.2, -0.2),
+			Vector2(0.8, 0.2)]), Color(1.0, 0.9, 0.4, 0.9))
+	elif sp == 21:  # Buco Nero: disco (parte dietro)
+		draw_polyline(_ring(0.0, TAU), Color(0.75, 0.35, 1.0), 0.14, true)
+	elif sp == 22:  # Aurora: nastri luminosi
+		var cols := [Color(0.3, 1.0, 0.6, 0.8), Color(1.0, 0.5, 0.9, 0.8), Color(0.4, 0.7, 1.0, 0.8)]
+		for k in 3:
+			var pts := PackedVector2Array()
+			for j in 11:
+				var x := -0.9 + 0.18 * j
+				pts.append(Vector2(x, -1.25 - 0.2 * k + 0.15 * sin(t * 3.0 + j * 0.7 + k)))
+			draw_polyline(pts, cols[k], 0.1, true)
+	elif sp == 23:  # Quasar: getti di luce
+		draw_colored_polygon(PackedVector2Array([Vector2(-0.12, -0.9), Vector2(0, -2.2), Vector2(0.12, -0.9)]), Color(1.0, 0.95, 0.6))
+		draw_colored_polygon(PackedVector2Array([Vector2(-0.12, 0.9), Vector2(0, 2.0), Vector2(0.12, 0.9)]), Color(1.0, 0.95, 0.6))
+		draw_circle(Vector2.ZERO, 1.25, Color(1.0, 0.8, 0.3, 0.45))
 	elif sp == 16:  # Tentacolo: tentacoli
 		for k in 4:
 			var x := -0.6 + 0.4 * k
@@ -173,6 +192,14 @@ func _draw() -> void:
 		draw_circle(Vector2(0, -1.0), 0.1, Color(0.9, 0.2, 0.4))
 	elif sp == 15:  # Orbitus: anello (parte davanti)
 		draw_polyline(_ring(0.0, PI), Color(1.0, 0.85, 0.35), 0.12, true)
+	elif sp == 19:  # Lampo: fulmine in fronte
+		draw_colored_polygon(PackedVector2Array([Vector2(0.1, -1.55), Vector2(-0.3, -0.95), Vector2(-0.02, -0.95),
+			Vector2(-0.2, -0.5), Vector2(0.3, -1.1), Vector2(0.03, -1.1), Vector2(0.25, -1.55)]), Color(1.0, 0.92, 0.2))
+	elif sp == 20:  # Meteora: crateri
+		for c in [[Vector2(-0.5, 0.45), 0.18], [Vector2(0.55, 0.55), 0.13], [Vector2(0.05, -0.65), 0.12]]:
+			draw_circle(c[0], c[1], Color(0.5, 0.3, 0.18))
+	elif sp == 21:  # Buco Nero: disco (parte davanti)
+		draw_polyline(_ring(0.0, PI), Color(0.75, 0.35, 1.0), 0.14, true)
 
 	# Occhi e bocca
 	if sp == 3:
