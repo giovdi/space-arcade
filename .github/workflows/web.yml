@@ -36,6 +36,18 @@ jobs:
           ./godot --headless --import || true
           ./godot --headless --export-release Web build/web/index.html
 
+      - name: Versione anti-cache (hash del commit)
+        run: |
+          V="${GITHUB_SHA::8}"
+          cd build/web
+          echo "{\"v\":\"$V\"}" > version.json
+          cp "$GITHUB_WORKSPACE/web/versioncheck.js" versioncheck.js
+          # ?v=<hash> su js, json e png referenziati dalla pagina
+          sed -i -E "s#(index(\.[a-z-]+)*\.(js|json|png))#\1?v=$V#g" index.html
+          # controllo versione caricato per primo + niente cache per la pagina
+          sed -i "s#<head>#<head><meta http-equiv=\"Cache-Control\" content=\"no-cache\"><script src=\"versioncheck.js?v=$V\"></script>#" index.html
+          grep -c "v=$V" index.html || true
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build/web
