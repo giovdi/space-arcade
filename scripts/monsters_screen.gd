@@ -136,6 +136,22 @@ func _clear() -> void:
 		c.queue_free()
 
 
+## Ricostruisce la schermata attuale (dopo un acquisto o un potenziamento) senza riportare la lista in cima.
+func _reload() -> void:
+	var keep := 0
+	if scroll != null and is_instance_valid(scroll):
+		keep = scroll.scroll_vertical
+	_tab(current)
+	if scroll == null or keep == 0:
+		return
+	var sc := scroll
+	sc.modulate.a = 0.0  # evita il lampo in cima mentre si ricalcola il layout
+	await get_tree().process_frame
+	if is_instance_valid(sc):
+		sc.scroll_vertical = keep
+		sc.modulate.a = 1.0
+
+
 func _tab(id: String) -> void:
 	b_id += 1
 	MonsterData.save()
@@ -326,7 +342,7 @@ func _shop_card(sp: int) -> Control:
 		MonsterData.save()
 		_refresh_coins()
 		_play_species(sp)
-		_tab("shop"))
+		_reload())
 	vb.add_child(b)
 	return pc
 
@@ -380,7 +396,7 @@ func _build_team() -> void:
 				MonsterData.save()
 				_refresh_coins()
 				_play_species(sp)
-				_tab("team")))
+				_reload()))
 
 
 # ------------------------------------------------------------ battaglia
