@@ -227,14 +227,16 @@ func _build_island() -> void:
 	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	content.add_child(panel)
 	var grid := GridContainer.new()
-	grid.columns = 4
+	# Fino a 12 mostri: 4 colonne grandi; fino a 24: 6 colonne più piccole (4 righe), così stanno nello schermo.
+	var many := MonsterData.monsters.size() > 12
+	grid.columns = 6 if many else 4
 	grid.add_theme_constant_override("h_separation", 10)
 	grid.add_theme_constant_override("v_separation", 10)
 	panel.add_child(grid)
 	for i in MonsterData.monsters.size():
 		var m: Dictionary = MonsterData.monsters[i]
 		var v := MonsterView.new(int(m["sp"]))
-		v.custom_minimum_size = Vector2(260, 260)
+		v.custom_minimum_size = Vector2(180, 180) if many else Vector2(260, 260)
 		v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		v.tapped.connect(_on_island_tap.bind(i))
 		grid.add_child(v)

@@ -2,7 +2,7 @@ class_name MonsterData
 extends RefCounted
 ## Dati e salvataggio dei Mostri Cosmici (stato statico condiviso tra le schermate).
 
-const MAX_SLOTS := 12
+const MAX_SLOTS := 24
 const MAX_LV := 10
 const SAVE_PATH := "user://monsters.cfg"
 
