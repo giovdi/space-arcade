@@ -169,7 +169,7 @@ func _build_world() -> void:
 	env.ambient_light_color = Color(0.5, 0.55, 0.9)
 	env.ambient_light_energy = 0.7
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.glow_enabled = true
+	env.glow_enabled = false  # il bagliore è costoso sui tablet e consuma batteria
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)

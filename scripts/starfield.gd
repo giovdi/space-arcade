@@ -4,6 +4,7 @@ extends Control
 
 var stars: Array[Vector4] = []
 var t := 0.0
+var acc := 0.0
 
 
 func _ready() -> void:
@@ -16,8 +17,12 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# Lo scintillio è lento: 12 ridisegni al secondo bastano e risparmiano batteria.
 	t += delta
-	queue_redraw()
+	acc += delta
+	if acc >= 1.0 / 12.0:
+		acc = 0.0
+		queue_redraw()
 
 
 func _draw() -> void:

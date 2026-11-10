@@ -13,6 +13,7 @@ var clickable := true
 var t := 0.0
 var press_pos := Vector2.ZERO
 var pending := false
+var acc := 0.0
 
 
 func _init(species: int = 0) -> void:
@@ -25,7 +26,11 @@ func _process(delta: float) -> void:
 	t += delta
 	bump = maxf(bump - delta * 2.5, 0.0)
 	hurt = maxf(hurt - delta * 3.0, 0.0)
-	queue_redraw()
+	# 30 ridisegni al secondo bastano per queste animazioni (e con 24 mostri si risparmia batteria)
+	acc += delta
+	if acc >= 1.0 / 30.0 and is_visible_in_tree():
+		acc = 0.0
+		queue_redraw()
 
 
 ## Suona solo con un tocco rapido sul corpo del mostro; fuori dal mostro o
