@@ -6,6 +6,7 @@ const GAMES := [
 	{"id": "crossword", "name": "CRUCIVERBA", "desc": "Parole dalla galassia", "color": Color(1.0, 0.75, 0.2), "ready": true},
 	{"id": "monsters", "name": "MOSTRI COSMICI", "desc": "Alleva e combatti", "color": Color(0.4, 1.0, 0.5), "ready": true},
 	{"id": "parkour", "name": "PARKOUR 3D", "desc": "Corri tra gli asteroidi", "color": Color(1.0, 0.35, 0.8), "ready": true},
+	{"id": "guess", "name": "INDOVINA IL MOSTRO", "desc": "Ascolta il canto e scegli", "color": Color(0.7, 0.55, 1.0), "ready": true},
 ]
 
 var toast: Label
@@ -32,7 +33,7 @@ func _ready() -> void:
 	col.add_child(sub)
 
 	var grid := GridContainer.new()
-	grid.columns = 2
+	grid.columns = 3
 	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 40)
 	grid.add_theme_constant_override("v_separation", 40)

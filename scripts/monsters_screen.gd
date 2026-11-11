@@ -118,16 +118,16 @@ func _on_reset(btn: Button) -> void:
 	_tab("island")
 
 
-func _play_freq(freq: float) -> void:
+func _play_freq(freq: float, timbre := 0) -> void:
 	for p in players:
 		if not p.playing:
-			p.stream = Synth.note(freq)
+			p.stream = Synth.note(freq, 0.6, timbre)
 			p.play()
 			return
 
 
 func _play_species(sp: int) -> void:
-	_play_freq(MonsterData.SPECIES[sp]["freq"])
+	_play_freq(MonsterData.SPECIES[sp]["freq"], sp)
 
 
 func _clear() -> void:
@@ -538,7 +538,7 @@ func _player_act(kind: String) -> void:
 		be["hp"] = maxi(0, int(be["hp"]) - dmg)
 		e_view.hurt = 1.0
 		p_view.bump = 1.0
-		_play_freq(float(MonsterData.SPECIES[int(bp["sp"])]["freq"]))
+		_play_freq(float(MonsterData.SPECIES[int(bp["sp"])]["freq"]), int(bp["sp"]))
 	else:
 		p_view.bump = 0.6
 		_play_freq(660.0)
@@ -563,7 +563,7 @@ func _enemy_act() -> void:
 	bp["hp"] = maxi(0, int(bp["hp"]) - dmg)
 	p_view.hurt = 1.0
 	e_view.bump = 1.0
-	_play_freq(float(MonsterData.SPECIES[int(be["sp"])]["freq"]) * 0.5)
+	_play_freq(float(MonsterData.SPECIES[int(be["sp"])]["freq"]) * 0.5, int(be["sp"]))
 	b_log.text = "%s %s: %d danni!" % [be["name"], "sferra un attacco potente" if strong else "attacca", dmg]
 	_update_battle_ui()
 

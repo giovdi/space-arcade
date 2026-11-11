@@ -7,6 +7,7 @@ const SCREENS := {
 	"parkour": "res://scenes/parkour.tscn",
 	"monsters": "res://scenes/monsters.tscn",
 	"crossword": "res://scenes/crossword.tscn",
+	"guess": "res://scenes/guess.tscn",
 }
 
 var current := "hub"
